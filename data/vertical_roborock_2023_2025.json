@@ -1,0 +1,236 @@
+{
+  "meta": {
+    "type": "vertical",
+    "industryId": "robot",
+    "industryName": "机器人/智能硬件行业",
+    "companyId": "roborock",
+    "companyName": "石头科技",
+    "years": [
+      "2023",
+      "2025"
+    ],
+    "theme": "同一家公司从2023到2025年，组织效率为什么发生变化？"
+  },
+  "companyProfile": {
+    "summary": "请替换为基于2023和2025年报整理的公司简介。",
+    "coreBusiness": "请填写主营业务。",
+    "organizationFeatures": [
+      "请填写组织特征1",
+      "请填写组织特征2"
+    ]
+  },
+  "yearlyData": {
+    "2023": {
+      "inputs": {
+        "员工人数": {
+          "value": null,
+          "unit": "人"
+        },
+        "研发费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "销售费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "管理费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "总资产": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "支付给职工以及为职工支付的现金": {
+          "value": null,
+          "unit": "亿元"
+        }
+      },
+      "outputs": {
+        "营业收入": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "净利润": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "ROE": {
+          "value": null,
+          "unit": "%"
+        },
+        "ROA": {
+          "value": null,
+          "unit": "%"
+        },
+        "毛利率": {
+          "value": null,
+          "unit": "%"
+        },
+        "人均营收": {
+          "value": null,
+          "unit": "万元/人"
+        },
+        "人均净利润": {
+          "value": null,
+          "unit": "万元/人"
+        }
+      },
+      "efficiency": {
+        "单位人力资本回报率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "研发投入产出效率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "销售费用产出率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "管理费用产出率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "资产产出效率": {
+          "value": null,
+          "unit": "次"
+        }
+      },
+      "blackboxSummary": "请填写2023年组织黑箱特征摘要。"
+    },
+    "2025": {
+      "inputs": {
+        "员工人数": {
+          "value": null,
+          "unit": "人"
+        },
+        "研发费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "销售费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "管理费用": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "总资产": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "支付给职工以及为职工支付的现金": {
+          "value": null,
+          "unit": "亿元"
+        }
+      },
+      "outputs": {
+        "营业收入": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "净利润": {
+          "value": null,
+          "unit": "亿元"
+        },
+        "ROE": {
+          "value": null,
+          "unit": "%"
+        },
+        "ROA": {
+          "value": null,
+          "unit": "%"
+        },
+        "毛利率": {
+          "value": null,
+          "unit": "%"
+        },
+        "人均营收": {
+          "value": null,
+          "unit": "万元/人"
+        },
+        "人均净利润": {
+          "value": null,
+          "unit": "万元/人"
+        }
+      },
+      "efficiency": {
+        "单位人力资本回报率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "研发投入产出效率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "销售费用产出率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "管理费用产出率": {
+          "value": null,
+          "unit": "倍"
+        },
+        "资产产出效率": {
+          "value": null,
+          "unit": "次"
+        }
+      },
+      "blackboxSummary": "请填写2025年组织黑箱特征摘要。"
+    }
+  },
+  "developmentStageAnalysis": [
+    {
+      "year": "2023",
+      "stage": "请判断发展阶段，如扩张、成熟、转型、调整等。",
+      "strategyFocus": "请填写战略重点。",
+      "organizationFeature": "请填写组织阶段特征。"
+    },
+    {
+      "year": "2025",
+      "stage": "请判断发展阶段，如扩张、成熟、转型、调整等。",
+      "strategyFocus": "请填写战略重点。",
+      "organizationFeature": "请填写组织阶段特征。"
+    }
+  ],
+  "blackboxEvolution": [
+    {
+      "category": "战略演化",
+      "from2023": "请填写2023表现。",
+      "to2025": "请填写2025变化。",
+      "evidence": "请填入年报证据。",
+      "impact": "请说明对输入输出效率的影响。"
+    },
+    {
+      "category": "组织结构演化",
+      "from2023": "请填写2023表现。",
+      "to2025": "请填写2025变化。",
+      "evidence": "请填入年报证据。",
+      "impact": "请说明对输入输出效率的影响。"
+    },
+    {
+      "category": "运营流程演化",
+      "from2023": "请填写2023表现。",
+      "to2025": "请填写2025变化。",
+      "evidence": "请填入年报证据。",
+      "impact": "请说明对输入输出效率的影响。"
+    },
+    {
+      "category": "人才激励演化",
+      "from2023": "请填写2023表现。",
+      "to2025": "请填写2025变化。",
+      "evidence": "请填入年报证据。",
+      "impact": "请说明对输入输出效率的影响。"
+    }
+  ],
+  "teachingQuestions": [
+    "2023到2025年，公司投入结构发生了什么变化？",
+    "输出绩效是否同步改善？",
+    "哪些组织黑箱因素能够解释效率变化？"
+  ],
+  "referenceConclusion": "请替换为教师参考结论。"
+}
