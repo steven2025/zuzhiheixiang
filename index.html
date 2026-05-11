@@ -1,0 +1,222 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>组织黑箱诊断教学平台</title>
+  <style>
+    :root{
+      --bg1:#182848; --bg2:#4b6cb7; --card:#ffffffee; --text:#1f2937; --muted:#64748b;
+      --blue:#2563eb; --purple:#7c3aed; --pink:#ec4899; --orange:#f97316; --green:#16a34a;
+      --shadow:0 18px 35px rgba(15,23,42,.22);
+    }
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Microsoft YaHei","PingFang SC",Arial,sans-serif;color:var(--text);min-height:100vh;background:radial-gradient(circle at top left,rgba(255,255,255,.22),transparent 28%),linear-gradient(135deg,var(--bg1),var(--bg2));}
+    .app{min-height:100vh;display:flex;flex-direction:column}
+    header{min-height:76px;padding:14px 24px;color:white;display:flex;align-items:center;justify-content:space-between;background:rgba(15,23,42,.34);backdrop-filter:blur(12px);box-shadow:inset 0 -1px 0 rgba(255,255,255,.14)}
+    .brand{display:flex;align-items:center;gap:12px}
+    .brand-icon{width:50px;height:50px;border-radius:16px;display:grid;place-items:center;font-weight:900;background:linear-gradient(145deg,#facc15,#f97316);color:#111827;box-shadow:0 7px 0 #b45309,0 15px 22px rgba(0,0,0,.25)}
+    h1,h2,h3{margin-top:0}.brand h1{font-size:22px;margin:0}.brand p{margin:3px 0 0;opacity:.8}
+    .top-nav{padding:12px 20px 16px;display:flex;gap:12px;overflow-x:auto;background:rgba(255,255,255,.1);border-bottom:1px solid rgba(255,255,255,.14)}
+    button{font-family:inherit;cursor:pointer;border:0}
+    .nav-main,.nav-sub,.third-btn,.primary,.small{color:#fff;white-space:nowrap;transition:.15s ease}
+    .nav-main{padding:12px 18px;border-radius:999px;font-weight:900;background:linear-gradient(145deg,var(--purple),var(--blue));box-shadow:0 7px 0 #1d4ed8,0 13px 20px rgba(0,0,0,.24)}
+    .nav-main.selected,.nav-sub.selected,.third-btn.selected{outline:3px solid rgba(255,255,255,.85);background:linear-gradient(145deg,var(--orange),var(--pink));box-shadow:0 0 22px rgba(250,204,21,.55),0 6px 0 #92400e}
+    .nav-main:hover,.nav-sub:hover,.third-btn:hover,.primary:hover,.small:hover{transform:translateY(-2px);filter:brightness(1.08)}
+    .main{padding:22px 28px 28px;flex:1}
+    .card{background:var(--card);min-height:calc(100vh - 185px);border-radius:28px;padding:22px;box-shadow:var(--shadow)}
+    .content-head{display:flex;justify-content:space-between;gap:14px;align-items:center;border-bottom:1px solid #e5e7eb;padding-bottom:14px}
+    .content-head h2{font-size:28px;color:#1e3a8a;margin:0}.content-head p{color:var(--muted);margin:6px 0 0}
+    .pill{padding:10px 16px;border-radius:999px;color:#1e3a8a;background:#dbeafe;border:1px solid #bfdbfe;font-weight:800}
+    .sub-nav{display:flex;flex-wrap:wrap;gap:10px;padding:16px 4px 18px;border-bottom:1px solid #eef2f7;margin-bottom:18px}
+    .nav-sub{padding:10px 14px;border-radius:14px;font-weight:800;background:linear-gradient(145deg,#06b6d4,#3b82f6);box-shadow:0 5px 0 #0e7490,0 10px 14px rgba(0,0,0,.18)}
+    .hero{padding:24px;border-radius:24px;background:linear-gradient(135deg,#eef2ff,#fdf2f8);border:1px solid #e0e7ff;margin-bottom:18px}
+    .panel{background:white;border-radius:20px;padding:18px;border:1px solid #e5e7eb;box-shadow:0 8px 20px rgba(15,23,42,.08)}
+    .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:18px}.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+    .flow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin:18px 0}.flow-box{flex:1;min-width:180px;text-align:center;padding:18px;border-radius:18px;color:#fff;font-size:20px;font-weight:900;background:linear-gradient(145deg,#22c55e,#2563eb);box-shadow:0 8px 0 #1e40af,0 16px 22px rgba(15,23,42,.18)}.arrow{font-size:28px;font-weight:900;color:#4f46e5}
+    .drawer{border:1px solid #dbeafe;border-radius:20px;background:#f8fbff;overflow:hidden;margin:18px 0}.drawer-header{display:flex;justify-content:space-between;align-items:center;padding:16px 18px;cursor:pointer;background:linear-gradient(145deg,#dbeafe,#f5d0fe);font-weight:900}.drawer-body{display:none;padding:18px}.drawer.open .drawer-body{display:block}
+    .indicator-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:14px}.indicator-card{background:white;border:1px solid #e5e7eb;border-radius:18px;padding:14px;box-shadow:0 6px 15px rgba(15,23,42,.08)}.indicator-card h4{margin:0 0 8px;color:#1d4ed8}.indicator-card p{margin:6px 0;font-size:14px;color:#475569}.choice-row{display:flex;gap:10px;margin-top:10px}.choice-row label{flex:1;padding:8px;border-radius:12px;background:#eef2ff;border:1px solid #c7d2fe;cursor:pointer}
+    .primary{padding:12px 18px;border-radius:14px;font-weight:900;background:linear-gradient(145deg,#22c55e,#15803d);box-shadow:0 7px 0 #166534,0 14px 18px rgba(0,0,0,.18)}.small{padding:8px 12px;border-radius:12px;background:linear-gradient(145deg,#f97316,#dc2626);box-shadow:0 4px 0 #991b1b}
+    .result{margin-top:18px;padding:16px;border-radius:18px;background:#f0fdf4;border:1px solid #bbf7d0}.warn{background:#fffbeb;border-color:#fde68a}
+    .blackbox-layout{display:grid;grid-template-columns:210px minmax(0,1fr);gap:18px;align-items:start}.third-nav{position:sticky;top:12px;padding:14px;border-radius:20px;background:linear-gradient(180deg,#eef2ff,#f8fafc);border:1px solid #dbeafe;box-shadow:0 10px 24px rgba(15,23,42,.08)}.third-title{font-weight:900;color:#1e3a8a;margin-bottom:12px}.third-btn{display:block;width:100%;margin:8px 0;padding:11px 12px;border-radius:14px;text-align:left;font-weight:800;background:linear-gradient(145deg,#64748b,#2563eb);box-shadow:0 5px 0 #1e40af,0 10px 14px rgba(0,0,0,.16)}
+    .analysis-split{display:grid;grid-template-columns:40% 60%;gap:18px;align-items:start}.analysis-table,.analysis-chart{background:#fff;border-radius:20px;padding:18px;border:1px solid #e5e7eb;box-shadow:0 8px 20px rgba(15,23,42,.08);min-width:0}.analysis-table{overflow-x:auto}
+    .chart-placeholder{min-height:360px;display:grid;place-items:center;text-align:center;border-radius:18px;color:#64748b;background:linear-gradient(135deg,rgba(219,234,254,.85),rgba(250,232,255,.85));border:2px dashed #93c5fd;font-weight:800}
+    .table{width:100%;border-collapse:collapse;margin-top:12px}.table th,.table td{border:1px solid #e5e7eb;padding:10px;text-align:left;vertical-align:top}.table th{background:#eef2ff}.muted{color:var(--muted)}.placeholder{padding:30px;text-align:center;color:#64748b;border:2px dashed #cbd5e1;border-radius:20px;background:#f8fafc}
+    select,textarea,input{width:100%;padding:11px 12px;border:1px solid #cbd5e1;border-radius:12px;font-family:inherit;font-size:15px;background:white}.form-row{display:grid;grid-template-columns:150px 1fr;gap:12px;margin-bottom:12px;align-items:center}
+    .timeline{display:flex;flex-direction:column;gap:12px}.timeline-item{padding:14px;border-radius:16px;background:#f8fafc;border:1px solid #dbeafe}.timeline-item strong{display:block;color:#1d4ed8;margin-bottom:4px}
+    .factor-card{border-left:5px solid #3b82f6}.tag{display:inline-block;padding:4px 8px;margin:3px;border-radius:999px;background:#eef2ff;color:#1e40af;font-size:12px;font-weight:800}
+    @media(max-width:980px){.grid-2,.grid-3,.analysis-split,.blackbox-layout{grid-template-columns:1fr}.third-nav{position:static;display:flex;gap:10px;overflow-x:auto}.third-title{display:none}.third-btn{width:auto;min-width:150px;text-align:center}.content-head{align-items:flex-start;flex-direction:column}}
+    @media(max-width:640px){.main{padding:14px}.card{border-radius:20px;padding:16px}.brand h1{font-size:17px}.nav-main{padding:10px 14px;font-size:13px}}
+  </style>
+</head>
+<body>
+<div class="app">
+  <header>
+    <div class="brand"><div class="brand-icon">OD</div><div><h1>组织黑箱诊断教学平台</h1><p>静态版：输入 → 黑箱 → 输出</p></div></div>
+    <div class="pill">7文件静态版</div>
+  </header>
+  <nav id="topNav" class="top-nav"></nav>
+  <main class="main">
+    <section class="card">
+      <div class="content-head"><div><h2 id="pageTitle"></h2><p id="pageSubtitle"></p></div><div class="pill">主显示区</div></div>
+      <div id="subNav" class="sub-nav"></div>
+      <section id="mainContent"></section>
+    </section>
+  </main>
+</div>
+
+<script>
+const DATA_FILES = {
+  horizontal: {
+    baijiu: "data/horizontal_baijiu_2025.json",
+    robot: "data/horizontal_robot_2025.json"
+  },
+  vertical: {
+    moutai: "data/vertical_moutai_2023_2025.json",
+     luzhoulaojiao: "data/vertical_luzhoulaojiao_2023_2025.json",
+    roborock: "data/vertical_roborock_2023_2025.json",
+    ecovacs: "data/vertical_ecovacs_2023_2025.json"
+  }
+};
+
+const INDICATORS = [
+  {id:"employees",name:"员工人数",type:"input",definition:"企业期末或年度平均员工总数，反映组织人力资源规模。",formula:"通常取自年报披露的员工人数。",note:"员工人数代表组织投入的人力资源，因此属于输入层指标。"},
+  {id:"rd",name:"研发费用",type:"input",definition:"企业用于技术研发、产品开发和创新活动的支出。",formula:"研发费用 = 费用化研发投入 + 资本化研发投入。",note:"研发费用代表组织创新资源投入，因此属于输入层指标。"},
+  {id:"sales",name:"销售费用",type:"input",definition:"企业为销售产品、拓展市场、渠道建设和品牌推广发生的费用。",formula:"通常取自利润表中的销售费用。",note:"销售费用代表市场开拓投入，因此属于输入层指标。"},
+  {id:"admin",name:"管理费用",type:"input",definition:"企业组织管理和行政运营过程中发生的费用。",formula:"通常取自利润表中的管理费用。",note:"管理费用代表组织管理资源投入，因此属于输入层指标。"},
+  {id:"assets",name:"总资产",type:"input",definition:"企业拥有或控制的全部经济资源，反映组织资本资源基础。",formula:"总资产 = 负债 + 所有者权益。",note:"总资产代表组织可调配的资本资源基础，因此属于输入层指标。"},
+  {id:"employee_cash",name:"支付给职工以及为职工支付的现金",type:"input",definition:"企业为员工支付的工资、奖金、社保、公积金等现金支出，可近似反映人力资本投入。",formula:"通常取自现金流量表。",note:"该指标代表企业投入到员工身上的人力资本成本，因此属于输入层指标。"},
+  {id:"revenue",name:"营业收入",type:"output",definition:"企业销售商品或提供服务获得的收入，反映组织市场产出。",formula:"通常取自利润表中的营业收入。",note:"营业收入反映组织将资源转化为市场结果的能力，因此属于输出层指标。"},
+  {id:"profit",name:"净利润",type:"output",definition:"企业扣除成本、费用、税费后的最终利润。",formula:"净利润 = 利润总额 - 所得税费用。",note:"净利润反映组织经营成果，因此属于输出层指标。"},
+  {id:"roe",name:"ROE",type:"output",definition:"净资产收益率，衡量企业使用股东权益创造利润的能力。",formula:"ROE = 净利润 / 平均净资产 × 100%。",note:"ROE反映资本投入后的回报结果，因此属于输出层指标。"},
+  {id:"roa",name:"ROA",type:"output",definition:"总资产收益率，衡量企业使用全部资产创造利润的能力。",formula:"ROA = 净利润 / 平均总资产 × 100%。",note:"ROA反映资产使用后的产出效果，因此属于输出层指标。"},
+  {id:"margin",name:"毛利率",type:"output",definition:"营业收入扣除营业成本后的盈利能力。",formula:"毛利率 =（营业收入 - 营业成本）/ 营业收入 × 100%。",note:"毛利率反映产品或服务盈利质量，因此属于输出层指标。"},
+  {id:"revenue_per_employee",name:"人均营收",type:"output",definition:"平均每名员工创造的营业收入，反映人力资源产出效率。",formula:"人均营收 = 营业收入 / 员工人数。",note:"人均营收反映人力投入转化后的收入效率，因此属于输出层指标。"},
+  {id:"profit_per_employee",name:"人均净利润",type:"output",definition:"平均每名员工创造的净利润，反映组织人力利润产出能力。",formula:"人均净利润 = 净利润 / 员工人数。",note:"人均净利润反映人力投入转化后的利润结果，因此属于输出层指标。"},
+  {id:"human_capital_return",name:"单位人力资本回报率",type:"output",definition:"企业每投入1元人力资本成本所形成的净利润，反映人力资本投入回报。",formula:"单位人力资本回报率 = 净利润 / 支付给职工以及为职工支付的现金。该指标为教学近似值。",note:"它衡量人力资本投入后的利润回报，因此属于输出效率指标。"},
+  {id:"rd_efficiency",name:"研发投入产出效率",type:"output",definition:"企业每投入1元研发费用所形成的收入产出，反映研发资源转化效率。",formula:"研发投入产出效率 = 营业收入 / 研发费用。若披露新产品收入，也可用新产品收入 / 研发费用。",note:"该指标反映研发投入后的产出效率，因此属于输出效率指标。"},
+  {id:"sales_efficiency",name:"销售费用产出率",type:"output",definition:"企业每投入1元销售费用所形成的营业收入，反映市场投入转化效率。",formula:"销售费用产出率 = 营业收入 / 销售费用。",note:"该指标衡量销售资源投入后的市场产出效率，因此属于输出效率指标。"},
+  {id:"admin_efficiency",name:"管理费用产出率",type:"output",definition:"企业每投入1元管理费用所形成的营业收入，反映组织管理投入的产出效率。",formula:"管理费用产出率 = 营业收入 / 管理费用。",note:"该指标衡量管理资源投入后的组织产出效率，因此属于输出效率指标。"},
+  {id:"asset_efficiency",name:"资产产出效率",type:"output",definition:"企业每1元资产形成的营业收入，反映资产使用效率。",formula:"资产产出效率 = 营业收入 / 总资产。",note:"该指标反映资本资源经过组织运行后的产出效率，因此属于输出效率指标。"}
+].sort(()=>Math.random()-0.5);
+
+const state = {
+  main:"intro", sub:"theory", third:"select",
+  horizontalIndustry:"baijiu", verticalCompany:"moutai",
+  cache:{}
+};
+
+const nav = [
+  {id:"intro",title:"课程导入",full:"模块一：课程导入",subs:[["theory","组织黑箱理论简介"],["model","输入—黑箱—输出模型"],["tasks","学习任务说明"]]},
+  {id:"training",title:"指标训练",full:"模块二：输入/输出指标训练",subs:[["classification","指标分类练习"],["feedback","结果反馈"]]},
+  {id:"blackbox",title:"上市公司黑箱分析",full:"模块三：上市公司黑箱分析",subs:[["horizontal","横向对比"],["vertical","纵向对比"]]},
+  {id:"tools",title:"诊断工具箱",full:"模块四：组织诊断工具箱",subs:[["six","六个盒子模型"],["seven","麦肯锡7S模型"],["q12","盖洛普Q12"],["choice","工具选择训练"]]},
+  {id:"virtual",title:"虚拟实验室",full:"模块五：虚拟组织诊断实验室",subs:[["case","虚拟企业案例"],["survey","问卷数据导入"],["interview","访谈材料分析"],["reasoning","诊断推理任务"]]},
+  {id:"tutor",title:"AI导师反馈",full:"模块六：AI导师反馈",subs:[["review","学生答案点评"],["hint","诊断思路提示"],["mapping","理论映射"]]},
+  {id:"report",title:"诊断报告",full:"模块七：组织诊断报告",subs:[["structure","报告结构"],["generate","自动生成报告"],["export","导出报告"]]}
+];
+
+function $(id){return document.getElementById(id)}
+function localSet(k,v){localStorage.setItem(k,JSON.stringify(v))}
+function localGet(k,d=null){try{return JSON.parse(localStorage.getItem(k))??d}catch(e){return d}}
+async function loadJson(path){ if(state.cache[path]) return state.cache[path]; const r=await fetch(path,{cache:"no-store"}); if(!r.ok) throw new Error(path); const j=await r.json(); state.cache[path]=j; return j; }
+function fmt(v){ if(v===null||v===undefined||v==="") return "待填"; return v; }
+function esc(s){return String(s??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#039;"}[m]))}
+
+function renderNav(){
+  $("topNav").innerHTML = nav.map(n=>`<button class="nav-main ${state.main===n.id?'selected':''}" onclick="switchMain('${n.id}')">${n.title}</button>`).join("");
+}
+function renderSubNav(){
+  const group=nav.find(n=>n.id===state.main);
+  $("subNav").innerHTML = group.subs.map(s=>`<button class="nav-sub ${state.sub===s[0]?'selected':''}" onclick="switchSub('${s[0]}')">${s[1]}</button>`).join("");
+}
+function switchMain(id){ const g=nav.find(n=>n.id===id); state.main=id; state.sub=g.subs[0][0]; state.third="select"; render(); }
+function switchSub(id){ state.sub=id; state.third="select"; render(); }
+async function render(){
+  renderNav(); renderSubNav();
+  const group=nav.find(n=>n.id===state.main); const sub=group.subs.find(s=>s[0]===state.sub);
+  $("pageTitle").textContent=group.full; $("pageSubtitle").textContent=sub[1];
+  if(state.main==="intro") return renderIntro();
+  if(state.main==="training") return renderTraining();
+  if(state.main==="blackbox") return renderBlackbox();
+  if(state.main==="tools") return renderTools();
+  if(state.main==="virtual") return renderVirtual();
+  if(state.main==="tutor") return renderTutor();
+  if(state.main==="report") return renderReport();
+}
+
+function renderIntro(){
+  if(state.sub==="model"){
+    $("mainContent").innerHTML=`<div class="hero"><h2>输入—黑箱—输出模型</h2><div class="flow"><div class="flow-box">输入层<br><small>资源投入</small></div><div class="arrow">→</div><div class="flow-box">组织黑箱<br><small>战略、结构、流程、文化、激励</small></div><div class="arrow">→</div><div class="flow-box">输出层<br><small>绩效结果</small></div></div></div>`; return;
+  }
+  if(state.sub==="tasks"){
+    $("mainContent").innerHTML=`<div class="panel"><h2>学习任务路径</h2><ol><li>识别输入/输出指标</li><li>进行横向黑箱比较：同一年份、同一行业、不同公司</li><li>进行纵向黑箱比较：同一家公司、不同年份</li><li>建立“输入—黑箱—输出”的组织诊断逻辑</li><li>使用诊断工具形成结构化结论</li></ol></div>`; return;
+  }
+  $("mainContent").innerHTML=`<div class="hero"><h2>组织黑箱理论简介</h2><p>组织黑箱理论关注：为什么相似的资源投入，会产生不同的组织产出？</p><p>本平台采用静态 JSON 数据，提前整理上市公司数据、年报证据与黑箱分析文本，避免课堂上依赖 API 或复杂 PDF 解析。</p></div>`;
+}
+
+function renderTraining(){
+  if(state.sub==="feedback"){
+    const r=localGet("feedback");
+    if(!r){$("mainContent").innerHTML=`<div class="hero"><h2>结果反馈</h2><p>这里会在提交指标分类练习后显示。</p></div><div class="placeholder">你还没有提交判断，请先完成“指标分类练习”。</div>`;return;}
+    $("mainContent").innerHTML=`<div class="hero"><h2>结果反馈</h2><p>以下反馈来自你最近一次提交。可以返回重新作答。</p></div><div class="${r.score===r.total?'result':'result warn'}"><h3>得分：${r.score} / ${r.total}</h3><p>已作答：${r.answered} 项</p></div><div class="grid-2"><div class="panel"><h3>正确判断</h3>${r.correct.length?`<ul>${r.correct.map(x=>`<li>${x}</li>`).join("")}</ul>`:"<p class='muted'>暂无。</p>"}</div><div class="panel"><h3>需要修正</h3>${r.review.length?`<ul>${r.review.map(x=>`<li>${x}</li>`).join("")}</ul>`:"<p class='muted'>很好，没有需要修正的项目。</p>"}</div></div><div class="panel" style="margin-top:18px"><button class="primary" onclick="switchSub('classification')">返回重新作答</button></div>`;return;
+  }
+  $("mainContent").innerHTML=`<div class="hero"><h2>输入/输出指标识别训练</h2><p>判断每个指标属于“输入层”还是“输出层”。提交后本页不显示答案，请点击“结果反馈”。</p></div><div id="drawer" class="drawer open"><div class="drawer-header" onclick="toggleDrawer()"><span>展开/收起指标池</span><span id="drawerIcon">▲</span></div><div class="drawer-body"><div class="indicator-grid">${INDICATORS.map(cardIndicator).join("")}</div><button class="primary" onclick="submitTraining()">提交判断</button></div></div><div id="submitMsg"></div>`;
+  const draft=localGet("draft",{}); Object.entries(draft).forEach(([id,val])=>{const el=document.querySelector(`input[name=c_${id}][value=${val}]`); if(el) el.checked=true;});
+}
+function cardIndicator(i){return `<div class="indicator-card"><h4>${i.name}</h4><p><strong>含义：</strong>${i.definition}</p><p><strong>公式：</strong>${i.formula}</p><div class="choice-row"><label><input type="radio" name="c_${i.id}" value="input" onchange="saveDraft()"> 输入层</label><label><input type="radio" name="c_${i.id}" value="output" onchange="saveDraft()"> 输出层</label></div></div>`}
+function toggleDrawer(){const d=$("drawer");d.classList.toggle("open");$("drawerIcon").textContent=d.classList.contains("open")?"▲":"▼"}
+function collectDraft(){const d={};INDICATORS.forEach(i=>{const el=document.querySelector(`input[name=c_${i.id}]:checked`);if(el)d[i.id]=el.value});return d}
+function saveDraft(){localSet("draft",collectDraft())}
+function submitTraining(){const d=collectDraft();localSet("draft",d);let score=0,answered=0,correct=[],review=[];INDICATORS.forEach(i=>{const v=d[i.id];if(!v){review.push(`<strong>${i.name}</strong>：尚未选择。${i.note}`);return;}answered++;if(v===i.type){score++;correct.push(`<strong>${i.name}</strong>：判断正确。${i.note}`)}else{review.push(`<strong>${i.name}</strong>：你选择了“${v==='input'?'输入层':'输出层'}”，但它更适合作为“${i.type==='input'?'输入层':'输出层'}”。${i.note}`)}});localSet("feedback",{score,total:INDICATORS.length,answered,correct,review});$("submitMsg").innerHTML=`<div class="result"><h3>已提交判断</h3><p>本页暂不显示答案，请点击“结果反馈”查看。</p><button class="primary" onclick="switchSub('feedback')">查看结果反馈</button></div>`}
+
+async function renderBlackbox(){
+  const stages = state.sub==="horizontal" ? [["select","选择行业"],["profile","公司简介"],["efficiency","效率指标分析"],["blackbox","黑箱因素分析"]] : [["select","选择公司"],["stage","发展阶段分析"],["trend","效率变化分析"],["evolution","黑箱演化分析"],["summary","组织诊断总结"]];
+  $("mainContent").innerHTML=`<div class="blackbox-layout"><aside class="third-nav"><div class="third-title">${state.sub==="horizontal"?"横向对比任务":"纵向对比任务"}</div>${stages.map(s=>`<button class="third-btn ${state.third===s[0]?'selected':''}" onclick="switchThird('${s[0]}')">${s[1]}</button>`).join("")}</aside><section id="thirdContent"></section></div>`;
+  if(state.sub==="horizontal") await renderHorizontal(); else await renderVertical();
+}
+function switchThird(t){state.third=t;render()}
+async function renderHorizontal(){
+  const box=$("thirdContent");
+  if(state.third==="select"){box.innerHTML=`<div class="hero"><h2>横向对比：选择行业</h2><p>横向对比固定为2025年，同一行业两家公司比较。</p></div><div class="panel"><div class="form-row"><label>行业</label><select id="hIndustry"><option value="baijiu">白酒行业：贵州茅台 vs 泸州老窖</option><option value="robot">机器人/智能硬件：石头科技 vs 科沃斯</option></select></div><button class="primary" onclick="confirmHorizontal()">确认选择</button></div>`; $("hIndustry").value=state.horizontalIndustry; return;}
+  const data=await loadJson(DATA_FILES.horizontal[state.horizontalIndustry]);
+  if(state.third==="profile") return renderHorizontalProfile(box,data);
+  if(state.third==="efficiency") return renderHorizontalEfficiency(box,data);
+  if(state.third==="blackbox") return renderHorizontalBlackbox(box,data);
+}
+function confirmHorizontal(){state.horizontalIndustry=$("hIndustry").value;state.third="profile";render()}
+function renderHorizontalProfile(box,data){box.innerHTML=`<div class="hero"><h2>${data.meta.industryName} 2025 横向对比：公司简介</h2><p>${data.meta.theme}</p></div><div class="grid-2">${data.companies.map(c=>`<div class="panel"><h3>${c.name}</h3><p>${esc(c.profile)}</p><h4>组织特征</h4>${(c.organizationFeatures||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div>`).join("")}</div>`}
+function metricRows(companies, group){const keys=[...new Set(companies.flatMap(c=>Object.keys(c[group]||{})))];return keys.map(k=>`<tr><td>${k}</td>${companies.map(c=>{const it=(c[group]||{})[k]||{};return `<td>${fmt(it.value)} ${it.unit||""}<br><span class="muted">${esc(it.note||it.formula||"")}</span></td>`}).join("")}</tr>`).join("")}
+function renderHorizontalEfficiency(box,data){box.innerHTML=`<div class="hero"><h2>效率指标分析</h2><p>${data.meta.industryName}，${data.meta.year}年。</p></div><div class="analysis-split"><div class="analysis-table"><h3>对比表格（40%）</h3><table class="table"><thead><tr><th>指标</th>${data.companies.map(c=>`<th>${c.name}</th>`).join("")}</tr></thead><tbody><tr><th colspan="${data.companies.length+1}">输入指标</th></tr>${metricRows(data.companies,"inputs")}<tr><th colspan="${data.companies.length+1}">输出指标</th></tr>${metricRows(data.companies,"outputs")}<tr><th colspan="${data.companies.length+1}">效率指标</th></tr>${metricRows(data.companies,"efficiency")}</tbody></table></div><div class="analysis-chart"><h3>可视化图形区（60%）</h3>${simpleBars(data.companies,"outputs","营业收入")}${simpleBars(data.companies,"outputs","净利润")}${simpleBars(data.companies,"efficiency","单位人力资本回报率") + simpleBars(data.companies,"efficiency","销售费用产出率")}<div class="chart-placeholder" style="min-height:180px;margin-top:12px">后续可扩展为 ECharts 雷达图/柱状图</div></div></div>`}
+function simpleBars(companies, group, key){const vals=companies.map(c=>Number(((c[group]||{})[key]||{}).value)||0);const max=Math.max(...vals,1);return `<div style="margin:12px 0"><strong>${key}</strong>${companies.map((c,i)=>`<div style="display:grid;grid-template-columns:90px 1fr 70px;gap:8px;align-items:center;margin:6px 0"><span>${c.name}</span><div style="height:16px;background:#dbeafe;border-radius:999px;overflow:hidden"><div style="width:${vals[i]/max*100}%;height:100%;background:linear-gradient(90deg,#3b82f6,#ec4899)"></div></div><span class="muted">${fmt(((c[group]||{})[key]||{}).value)}</span></div>`).join("")}</div>`}
+function renderHorizontalBlackbox(box,data){const cats=[...new Set(data.companies.flatMap(c=>(c.blackboxFactors||[]).map(f=>f.category)))];box.innerHTML=`<div class="hero"><h2>黑箱因素分析</h2><p>比较不同公司在战略、流程、创新、人才、治理等组织机制上的差异。</p></div><div class="grid-2"><div class="panel"><h3>分类对比</h3><table class="table"><thead><tr><th>类别</th>${data.companies.map(c=>`<th>${c.name}</th>`).join("")}</tr></thead><tbody>${cats.map(cat=>`<tr><td><strong>${cat}</strong></td>${data.companies.map(c=>{const f=(c.blackboxFactors||[]).find(x=>x.category===cat);return `<td>${esc(f?.summary||"待补充")}<br><span class="muted">${esc(f?.evidence||"")}</span></td>`}).join("")}</tr>`).join("")}</tbody></table></div><div class="panel"><h3>指标关联</h3>${data.companies.map(c=>`<h4>${c.name}</h4>${(c.blackboxFactors||[]).map(f=>`<div class="panel factor-card" style="margin-bottom:10px"><strong>${f.category}</strong><p>${esc(f.diagnosis||"")}</p><p><span class="tag">输入：${(f.relatedInputs||[]).join("、")}</span></p><p><span class="tag">输出：${(f.relatedOutputs||[]).join("、")}</span></p></div>`).join("")}`).join("")}</div></div><div class="panel" style="margin-top:18px"><h3>教学问题</h3><ol>${(data.teachingQuestions||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ol><h3>参考结论</h3><p>${esc(data.referenceConclusion)}</p></div>`}
+
+async function renderVertical(){
+  const box=$("thirdContent");
+  if(state.third==="select"){box.innerHTML=`<div class="hero"><h2>纵向对比：选择公司</h2><p>纵向对比固定为2023年与2025年，分析同一家公司组织效率为什么发生变化。</p></div><div class="panel"><div class="form-row"><label>公司</label><select id="vCompany"><option value="moutai">贵州茅台</option><option value="luzhoulaojiao">泸州老窖</option><option value="roborock">石头科技</option><option value="ecovacs">科沃斯</option></select></div><button class="primary" onclick="confirmVertical()">确认选择</button></div>`; $("vCompany").value=state.verticalCompany; return;}
+  const data=await loadJson(DATA_FILES.vertical[state.verticalCompany]);
+  if(state.third==="stage") return renderStage(box,data);
+  if(state.third==="trend") return renderTrend(box,data);
+  if(state.third==="evolution") return renderEvolution(box,data);
+  if(state.third==="summary") return renderSummary(box,data);
+}
+function confirmVertical(){state.verticalCompany=$("vCompany").value;state.third="stage";render()}
+function renderStage(box,data){box.innerHTML=`<div class="hero"><h2>${data.meta.companyName}：发展阶段分析</h2><p>${data.meta.theme}</p></div><div class="grid-2"><div class="panel"><h3>公司简介</h3><p>${esc(data.companyProfile.summary)}</p><p><strong>主营业务：</strong>${esc(data.companyProfile.coreBusiness)}</p>${(data.companyProfile.organizationFeatures||[]).map(x=>`<span class="tag">${esc(x)}</span>`).join("")}</div><div class="panel"><h3>阶段判断</h3><table class="table"><thead><tr><th>年份</th><th>阶段</th><th>战略重点</th><th>组织特征</th></tr></thead><tbody>${data.developmentStageAnalysis.map(x=>`<tr><td>${x.year}</td><td>${esc(x.stage)}</td><td>${esc(x.strategyFocus)}</td><td>${esc(x.organizationFeature)}</td></tr>`).join("")}</tbody></table></div></div>`}
+function renderTrend(box,data){const years=data.meta.years;const groups=["inputs","outputs","efficiency"];box.innerHTML=`<div class="hero"><h2>效率变化分析</h2><p>比较${years.join(" → ")}的投入、产出与效率变化。</p></div><div class="analysis-split"><div class="analysis-table"><h3>趋势表格（40%）</h3>${groups.map(g=>verticalTable(data,g)).join("")}</div><div class="analysis-chart"><h3>趋势图形区（60%）</h3>${simpleYearBars(data,"outputs","营业收入")}${simpleYearBars(data,"outputs","净利润")}${simpleYearBars(data,"efficiency","单位人力资本回报率") + simpleYearBars(data,"efficiency","销售费用产出率")}<div class="chart-placeholder" style="min-height:180px;margin-top:12px">后续可扩展为折线图/趋势图</div></div></div>`}
+function verticalTable(data,group){const years=data.meta.years;const keys=[...new Set(years.flatMap(y=>Object.keys((data.yearlyData[y]||{})[group]||{})))];const title={inputs:"输入指标",outputs:"输出指标",efficiency:"效率指标"}[group];return `<h4>${title}</h4><table class="table"><thead><tr><th>指标</th>${years.map(y=>`<th>${y}</th>`).join("")}</tr></thead><tbody>${keys.map(k=>`<tr><td>${k}</td>${years.map(y=>{const it=((data.yearlyData[y]||{})[group]||{})[k]||{};return `<td>${fmt(it.value)} ${it.unit||""}</td>`}).join("")}</tr>`).join("")}</tbody></table>`}
+function simpleYearBars(data, group, key){const years=data.meta.years;const vals=years.map(y=>Number((((data.yearlyData[y]||{})[group]||{})[key]||{}).value)||0);const max=Math.max(...vals,1);return `<div style="margin:12px 0"><strong>${key}</strong>${years.map((y,i)=>`<div style="display:grid;grid-template-columns:70px 1fr 70px;gap:8px;align-items:center;margin:6px 0"><span>${y}</span><div style="height:16px;background:#dbeafe;border-radius:999px;overflow:hidden"><div style="width:${vals[i]/max*100}%;height:100%;background:linear-gradient(90deg,#16a34a,#3b82f6)"></div></div><span class="muted">${fmt(vals[i]||null)}</span></div>`).join("")}</div>`}
+function renderEvolution(box,data){box.innerHTML=`<div class="hero"><h2>黑箱演化分析</h2><p>观察组织内部机制如何从2023演化到2025。</p></div><div class="grid-2"><div class="panel"><h3>演化矩阵</h3><table class="table"><thead><tr><th>类别</th><th>2023</th><th>2025</th><th>影响</th></tr></thead><tbody>${data.blackboxEvolution.map(x=>`<tr><td><strong>${x.category}</strong></td><td>${esc(x.from2023)}</td><td>${esc(x.to2025)}<br><span class="muted">${esc(x.evidence)}</span></td><td>${esc(x.impact)}</td></tr>`).join("")}</tbody></table></div><div class="panel"><h3>黑箱变化时间轴</h3><div class="timeline">${data.meta.years.map(y=>`<div class="timeline-item"><strong>${y}</strong><span>${esc(data.yearlyData[y]?.blackboxSummary||"待补充")}</span></div>`).join("")}</div></div></div>`}
+function renderSummary(box,data){box.innerHTML=`<div class="hero"><h2>组织诊断总结</h2><p>请基于输入变化、输出变化和黑箱演化形成诊断结论。</p></div><div class="grid-2"><div class="panel"><h3>教学问题</h3><ol>${(data.teachingQuestions||[]).map(q=>`<li>${esc(q)}</li>`).join("")}</ol><h3>参考结论</h3><p>${esc(data.referenceConclusion)}</p></div><div class="panel"><h3>学生反思</h3><textarea rows="9" placeholder="请写下你的组织诊断结论。"></textarea><button class="primary" style="margin-top:10px">保存反思</button></div></div>`}
+
+function renderTools(){
+  const map={six:["六个盒子模型",["目的","结构","关系","奖励","领导","支持机制"]],seven:["麦肯锡7S模型",["Strategy 战略","Structure 结构","Systems 制度","Shared Values 共同价值观","Skills 技能","Style 风格","Staff 人员"]],q12:["盖洛普Q12",["目标清晰","资源支持","发挥优势","认可反馈","关怀支持","成长机会","使命连接","高质量协作"]],choice:["工具选择训练",["根据组织问题选择合适工具","说明选择理由","连接黑箱因素与诊断工具"]]};
+  const item=map[state.sub]||map.six;$("mainContent").innerHTML=`<div class="hero"><h2>${item[0]}</h2><p>诊断工具用于把黑箱分析结构化。</p></div><div class="grid-2"><div class="panel"><h3>维度</h3><ul>${item[1].map(x=>`<li>${x}</li>`).join("")}</ul></div><div class="panel"><h3>练习</h3><textarea rows="8" placeholder="请说明该工具适合分析哪些组织黑箱问题。"></textarea></div></div>`;
+}
+function renderVirtual(){ $("mainContent").innerHTML=`<div class="hero"><h2>虚拟组织诊断实验室</h2><p>用于后续接入六盒、7S、Q12等内部问卷诊断练习。</p></div><div class="panel"><h3>星云科技公司</h3><p>营收增长较快，但员工离职率升高、研发投入增加、创新成果下降、员工敬业度降低。</p><table class="table"><tbody><tr><td>战略清晰度</td><td>62</td></tr><tr><td>部门协同</td><td>48</td></tr><tr><td>激励公平</td><td>43</td></tr><tr><td>流程效率</td><td>46</td></tr></tbody></table></div>`}
+function renderTutor(){ if(state.sub==="mapping"){$("mainContent").innerHTML=`<div class="panel"><h2>理论映射</h2><table class="table"><thead><tr><th>现象</th><th>理论</th></tr></thead><tbody><tr><td>管理层级增加</td><td>官僚制理论</td></tr><tr><td>部门协同差</td><td>系统理论</td></tr><tr><td>战略与结构不匹配</td><td>结构跟随战略</td></tr><tr><td>激励不足</td><td>双因素理论</td></tr></tbody></table></div>`;return;}$("mainContent").innerHTML=`<div class="panel"><h2>AI导师反馈占位</h2><p class="muted">静态版不接入API，可作为学生自我反思或教师课堂点评区。</p><textarea rows="8" placeholder="请粘贴或输入你的组织诊断分析。"></textarea></div>`}
+function renderReport(){ $("mainContent").innerHTML=`<div class="hero"><h2>组织诊断报告</h2><p>静态版可引导学生按结构撰写报告。</p></div><div class="panel"><ol><li>公司或案例基本情况</li><li>输入指标分析</li><li>输出指标分析</li><li>效率指标分析</li><li>黑箱因素识别</li><li>年报证据</li><li>主要组织问题</li><li>改进建议</li><li>学生反思</li></ol><textarea rows="10" placeholder="请在此撰写报告摘要。"></textarea></div>`}
+
+render();
+</script>
+</body>
+</html>
