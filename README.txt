@@ -5,7 +5,7 @@
 - data/horizontal_baijiu_2025.json：白酒行业2025横向对比
 - data/horizontal_robot_2025.json：机器人行业2025横向对比
 - data/vertical_moutai_2023_2025.json：贵州茅台纵向对比
-- data/vertical_wuliangye_2023_2025.json：五粮液纵向对比
+- data/vertical_luzhoulaojiao_2023_2025.json：泸州老窖纵向对比
 - data/vertical_roborock_2023_2025.json：石头科技纵向对比
 - data/vertical_ecovacs_2023_2025.json：科沃斯纵向对比
 
